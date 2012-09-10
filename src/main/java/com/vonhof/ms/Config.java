@@ -7,6 +7,8 @@ import com.vonhof.babelshark.node.ObjectNode;
 import com.vonhof.babelshark.node.SharkNode;
 import com.vonhof.babelshark.node.SharkType;
 import com.vonhof.ms.dto.SeriesDTO;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -23,11 +25,25 @@ public class Config {
     private static BabelSharkInstance bs = BabelShark.getDefaultInstance();
     
     public static ObjectNode getSetup() {
+        String configFile = System.getenv("user.home")+"/.config/mediaserver.json";
+        File file = new File(configFile);
+        if (!file.exists())
+            throw new RuntimeException("Config file not found: "+configFile);
+        
+        FileInputStream in;
         try {
-            return bs.read(new Input(Config.class.getResourceAsStream("/setup.json"),"json"), ObjectNode.class);
+            in = new FileInputStream(file);
+            try {
+                ObjectNode out = bs.read(new Input(in,"json"), ObjectNode.class);
+                in.close();
+                return out;
+            } catch (Exception ex) {
+                LOG.log(Level.SEVERE, null, ex);
+            }
         } catch (Exception ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
+        
         return new ObjectNode();
     }
     

@@ -1,5 +1,6 @@
 package com.vonhof.ms;
 
+import com.sun.jna.NativeLibrary;
 import com.vonhof.babelshark.BabelShark;
 import com.vonhof.babelshark.language.JsonLanguage;
 import com.vonhof.ms.controller.NZBController;
