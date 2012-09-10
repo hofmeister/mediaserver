@@ -3,12 +3,15 @@ package com.vonhof.ms.controller;
 import com.cheesmo.nzb.client.ClientConfig;
 import com.cheesmo.nzb.client.NzbClient;
 import com.vonhof.babelshark.annotation.Name;
+import com.vonhof.ms.Config;
 import com.vonhof.ms.dto.DownloadDTO;
 import com.vonhof.ms.dto.NZBServerDTO;
 import com.vonhof.webi.annotation.Parm;
 import com.vonhof.webi.annotation.Path;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 
 @Path("nzb")
 @Name("nzb")
@@ -18,15 +21,16 @@ public class NZBController {
     private ClientConfig config = new ClientConfig();
     
     
-    private void sync() {
-        config.setDownloadDir("/Users/Henrik/tmp");
-        config.setCacheDir("/Users/Henrik/tmp/cache");
-        config.setServer(server.getHost());
-        config.setPort(server.getPort());
-        config.setMaxConnections(server.getConnections());
+    public void sync() {
+        Map<String, Object> configMap = Config.getConfig();
+        config.setDownloadDir((String)configMap.get("tmpDir"));
+        config.setCacheDir((String)configMap.get("cacheDir"));
+        config.setServer((String)configMap.get("server"));
+        config.setPort((Integer)configMap.get("port"));
+        config.setMaxConnections((Integer)configMap.get("maxConnections"));
         
-        config.setUsername(server.getUsername());
-        config.setPassword(server.getPassword());
+        config.setUsername((String)configMap.get("username"));
+        config.setPassword((String)configMap.get("password"));
     }
             
             
@@ -47,24 +51,10 @@ public class NZBController {
         return server;
     }
     
-    public DownloadDTO download(final @Parm(required=true) String nzb) throws MalformedURLException {
-        DownloadDTO out = new DownloadDTO();
-        
-        URL url = new URL(nzb);
-        out.setFilename(url.getFile());
-        out.setPercent(0);
-        
+    public List<String> download(final @Parm(required=true) URL nzbUrl) {
         final NzbClient client = new NzbClient(config);
         
-        new Thread("downloading") {
-            @Override
-            public void run() {
-                client.start(nzb);
-            }
-        }.start();
-        
-        
-        return out;
+        return client.start(nzbUrl.toString());
     }
     
 }

@@ -1,3 +1,4 @@
 target
 libvlc.dylib
 libvlccore.dylib
+nbactions.xml

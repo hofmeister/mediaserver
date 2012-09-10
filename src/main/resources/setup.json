@@ -1,0 +1,32 @@
+{
+    "config": {
+        "destDir":"/Users/henrik/Movies",
+        "tmpDir":"/Users/Henrik/tmp",
+        "cacheDir":"/Users/Henrik/tmp/cache",
+        "maxConnections":20,
+        "server":"news-europe.giganews.com",
+        "username":"henrik@newdawn.dk",
+        "password":"hhofnett",
+        "port":23,
+        "nowords":["french","german","NL","dutch","FR"],
+        "pluswords":["x264","HDTV","EFNet"]
+    },
+    "series":[
+        {
+            "name":"White Collar",
+            "query":"white collar efnet 720p",
+            "pattern":"(?uis)White\\.Collar\\.S(?<season>0[0-9])E(?<episode>[0-9]{2})(?:\\.[A-Z]+)?\\.(?<definition>(?:480|720|1080)[pi])",
+            "imdb":"http://www.imdb.com/title/tt1358522/",
+            "minSize":1000,
+            "maxSize":2500
+        },
+        {
+            "name":"Breaking Bad",
+            "query":"breaking bad efnet 720p",
+            "pattern":"(?uis)Breaking\\.Bad\\.S(?<season>0[0-9])E(?<episode>[0-9]{2})(?:\\.[A-Z]+)?.(?<definition>(?:480|720|1080)[pi])",
+            "imdb":"http://www.imdb.com/title/tt1358522/",
+            "minSize":1000,
+            "maxSize":2500
+        }
+    ]
+}

@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class DownloadDTO {
     private String filename;
+    private int size;
     private Date created = new Date();
     private float percent = 0;
 
